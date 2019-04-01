@@ -16,6 +16,7 @@ Plug 'tpope/vim-surround'
 Plug 'metakirby5/codi.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
+Plug 'makerj/vim-pdf'
 
 call plug#end()
 
