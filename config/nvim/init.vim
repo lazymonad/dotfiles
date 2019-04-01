@@ -15,6 +15,7 @@ Plug 'heracek/html-autoclosetag'
 Plug 'tpope/vim-surround'
 Plug 'metakirby5/codi.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 
@@ -37,6 +38,8 @@ filetype plugin indent on
 set syntax=on
 set background=dark
 
+:set list
+:set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
 
 if has("termguicolors")
     set t_8f=�[38;2;%lu;%lu;%lum
@@ -44,15 +47,21 @@ if has("termguicolors")
     set termguicolors
 endif
 
-
+" tabs -> 4 spaces
 set tabstop=4
 set shiftwidth=4
+set softtabstop=4
 set expandtab
-set softtabstop=0
+
 set autoindent
 set smarttab
 
 set cursorline
+
+" Emmet:
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
 
 
 " SnipMate: 
