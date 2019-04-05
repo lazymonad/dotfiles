@@ -17,6 +17,9 @@ Plug 'metakirby5/codi.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'makerj/vim-pdf'
+Plug 'tpope/vim-fugitive'
+Plug 'posva/vim-vue'
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
 
@@ -61,7 +64,7 @@ set cursorline
 
 " Emmet:
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
+autocmd FileType html,php,css EmmetInstall
 
 
 
@@ -91,6 +94,19 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 " VimMove:
 let g:move_key_modifier = 'C'
+
+" MutliCursors:
+let g:multi_cursor_use_default_mapping=0
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
 
 " LightLine:
 let g:lightline = {
