@@ -1,49 +1,35 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'arcticicestudio/nord-vim'
-Plug 'garbas/vim-snipmate'
+Plug 'joshdick/onedark.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'pangloss/vim-javascript'
 Plug 'matze/vim-move'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/auto-pairs-gentle'
 Plug 'itchyny/lightline.vim'
 Plug 'stanangeloff/php.vim'
 Plug '2072/PHP-Indenting-for-VIm'
-Plug 'heracek/html-autoclosetag'
-Plug 'tpope/vim-surround'
 Plug 'metakirby5/codi.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'makerj/vim-pdf'
 Plug 'tpope/vim-fugitive'
-Plug 'posva/vim-vue'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'jiangmiao/simple-javascript-indenter'
+Plug 'posva/vim-vue'
+Plug 'othree/html5.vim'
 
 call plug#end()
 
 " Vim:
-set t_Co=256
+set t_Co=256 " Set full colorset
 
 
-set laststatus=2
-let mapleader = "\<Space>"
-set relativenumber
-
-colorscheme nord
-let g:nord_italic = 1
-let g:nord_underline = 1
-let g:nord_italic_comments = 1
-let g:nord_uniform_status_lines = 1
-let g:nord_cursor_line_number_background = 1
-
-filetype plugin indent on
-set syntax=on
-set background=dark
-
-:set list
-:set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
+colorscheme onedark " Cool colorscheme
+set syntax=on " Enable syntax processing
+set background=dark " Set dark background
 
 if has("termguicolors")
     set t_8f=�[38;2;%lu;%lu;%lum
@@ -51,16 +37,44 @@ if has("termguicolors")
     set termguicolors
 endif
 
+let mapleader = "\<Space>" " Leader is space key
 " tabs -> 4 spaces
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
+set tabstop=4 " Nuber of visual spaces per TAB
+set shiftwidth=4 " Indenting is 4 spaces
+set softtabstop=4 " Number of spaces in tab when editing
+set expandtab " TABS are spaces
+filetype plugin indent on " Enabling filetypes power 
 
-set autoindent
-set smarttab
+set showcmd " Show command in last line
+set number " Set numbers
+set relativenumber " Make numbers to relative
+set laststatus=2 " Status line for every window
+set scrolloff=10 " Minimal number of lines to keep below the cursor 
 
-set cursorline
+set autoindent " Copy indent form current line to new line
+set smarttab " TAB in front of the line inserts blank
+
+set autoread " Listen outside file changes
+set listchars=nbsp:·,tab:▸\ ,eol:¬ " Set invisibles like TextMate have
+set list " everything that isn't explicitly shown as something else
+set cursorline " Make cursor as whole line
+
+" No Ex mode (see :help Q)
+nnoremap Q <nop>
+
+" sudo write
+cmap w!! w !sudo tee > /dev/null %
+
+" Tabs:
+" Switch between tabs
+nnoremap <leader>l :tabnext<cr>
+nnoremap <leader>h :tabprev<cr>
+" Close window
+nnoremap <leader>w :tabclose<cr>
+
+" New tab
+nnoremap <leader>n :tabnew<cr>
+
 
 " Emmet:
 let g:user_emmet_install_global = 0
@@ -68,7 +82,7 @@ autocmd FileType html,php,css EmmetInstall
 
 
 
-" SnipMate: 
+" SnipMate:
 imap <C-J> <esc>a<Plug>snipMateNextOrTrigger
 smap <C-J> <Plug>snipMateNextOrTrigger
 
@@ -88,7 +102,7 @@ let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=1
 let g:nerdtree_tabs_open_on_console_startup=1
-map <Leader>n :NERDTreeToggle<CR>
+map <leader>, :NERDTreeToggle<CR>
 "close vim if only nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -108,9 +122,20 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
+" ALE Fixers:
+let g:neoformat_enabled_javascript = ['prettier-eslint', 'prettier', 'eslint']
+
+let g:jsx_ext_required = 0
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'vue': ['prettier'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
 " LightLine:
 let g:lightline = {
-      \ 'colorscheme': 'nord',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'readonly', 'filename', 'modified', 'charvaluehex' ] ]
@@ -119,5 +144,3 @@ let g:lightline = {
       \   'charvaluehex': '0x%B'
       \ },
       \ }
-
-
