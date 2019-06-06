@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'joshdick/onedark.vim'
+Plug 'prettier/vim-prettier'
+Plug 'whatyouhide/vim-gotham'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -19,29 +20,35 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jiangmiao/simple-javascript-indenter'
 Plug 'posva/vim-vue'
+Plug 'cakebaker/scss-syntax.vim'
 Plug 'othree/html5.vim'
+Plug 'sbdchd/neoformat'
+Plug 'w0rp/ale'
+Plug 'vimwiki/vimwiki'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'mattn/calendar-vim'
+Plug 'mxw/vim-jsx'
 
 call plug#end()
+
+" Vim todo plugin expandable (vimWiki):
+autocmd FileType vimwiki map <buffer> <Leader>wg :VimwikiGoto<space>
 
 " Vim:
 set t_Co=256 " Set full colorset
 
+colorscheme gotham256
 
-colorscheme onedark " Cool colorscheme
 set syntax=on " Enable syntax processing
 set background=dark " Set dark background
 
-if has("termguicolors")
-    set t_8f=�[38;2;%lu;%lu;%lum
-    set t_8b=�[48;2;%lu;%lu;%lum
-    set termguicolors
-endif
+
 
 let mapleader = "\<Space>" " Leader is space key
 " tabs -> 4 spaces
-set tabstop=4 " Nuber of visual spaces per TAB
-set shiftwidth=4 " Indenting is 4 spaces
-set softtabstop=4 " Number of spaces in tab when editing
+set tabstop=2 " Nuber of visual spaces per TAB
+set shiftwidth=2 " Indenting is 4 spaces
+set softtabstop=2 " Number of spaces in tab when editing
 set expandtab " TABS are spaces
 filetype plugin indent on " Enabling filetypes power 
 
@@ -70,7 +77,7 @@ cmap w!! w !sudo tee > /dev/null %
 nnoremap <leader>l :tabnext<cr>
 nnoremap <leader>h :tabprev<cr>
 " Close window
-nnoremap <leader>w :tabclose<cr>
+nnoremap <leader>c :tabclose<cr>
 
 " New tab
 nnoremap <leader>n :tabnew<cr>
@@ -102,9 +109,11 @@ let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=1
 let g:nerdtree_tabs_open_on_console_startup=1
-map <leader>, :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR>
+
 "close vim if only nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
 
 " VimMove:
 let g:move_key_modifier = 'C'
@@ -122,20 +131,25 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
+" 
 " ALE Fixers:
 let g:neoformat_enabled_javascript = ['prettier-eslint', 'prettier', 'eslint']
-
 let g:jsx_ext_required = 0
-
 let g:ale_fixers = {
-\   'javascript': ['prettier'],
-\   'vue': ['prettier'],
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\   'scss': ['prettier'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
+
+" vimwiki/vimwiki
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 " LightLine:
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'gotham256',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'readonly', 'filename', 'modified', 'charvaluehex' ] ]
@@ -144,3 +158,23 @@ let g:lightline = {
       \   'charvaluehex': '0x%B'
       \ },
       \ }
+
+" vimwiki stuff "
+au BufRead,BufNewFile *.wiki set filetype=md
+
+:autocmd FileType vimwiki map <leader>d :VimwikiMakeDiaryNote
+function! ToggleCalendar()
+  execute ":Calendar"
+  if exists("g:calendar_open")
+    if g:calendar_open == 1
+      execute "q"
+      unlet g:calendar_open
+    else
+      g:calendar_open = 1
+    end
+  else
+    let g:calendar_open = 1
+  end
+endfunction
+:autocmd FileType vimwiki map <leader>c :call ToggleCalendar()<cr>
+
